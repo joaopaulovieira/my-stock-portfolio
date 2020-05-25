@@ -1,0 +1,53 @@
+{
+  "name": "my-stock-portfolio",
+  "version": "0.0.1",
+  "description": "Project to manage a simple stock portfolio",
+  "keywords": [
+    "stock",
+    "portfolio"
+  ],
+  "homepage": "https://github.com/joaopaulovieira/my-stock-portfolio",
+  "bugs": {
+    "url": "https://github.com/joaopaulovieira/my-stock-portfolio/issues",
+    "email": "vieira.joaopaulo.91@gmail.com"
+  },
+  "license": "MIT",
+  "author": "Joao Paulo Vieira <vieira.joaopaulo.91@gmail.com>",
+  "files": [
+    "/dist",
+    "/src"
+  ],
+  "main": "dist/my-stock-portfolio.js",
+  "module": "dist/my-stock-portfolio.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:joaopaulovieira/my-stock-portfolio.git"
+  },
+  "scripts": {
+    "build": "rollup --config",
+    "build:verbose": "VERBOSE_BUILD=true npm run build",
+    "build:visualize": "GRAPH_ANALYZE_BUNDLE=true npm run build",
+    "start": "SERVE=true VERBOSE_BUILD=true rollup --config --watch",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "release": "MINIMIZE=true rollup --config"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@rollup/plugin-babel": "^5.0.0",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.3",
+    "eslint": "^7.0.0",
+    "rollup": "^2.10.2",
+    "rollup-plugin-filesize": "^9.0.0",
+    "rollup-plugin-livereload": "^1.3.0",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-sizes": "^1.0.2",
+    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-visualizer": "^4.0.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
