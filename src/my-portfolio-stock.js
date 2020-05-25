@@ -8,6 +8,7 @@ export default class MyStockPortfolio {
         this.buyActions = this.consolidateActions(this.operationsRegister.filter(item => item.action === 'buy'))
         this.sellActions = this.consolidateActions(this.operationsRegister.filter(item => item.action === 'sell'))
 
+        this.positions = this.removeSoldPositions(this.buyActions)
     }
 
 
@@ -17,6 +18,18 @@ export default class MyStockPortfolio {
         
         updatedOperations.forEach(operation => (operation.id = ++id))
         return updatedOperations
+    }
+
+    removeSoldPositions(positions) {
+        const updatedPositions = JSON.parse(JSON.stringify(positions))
+    
+        this.sellActions.forEach(sell => {
+            updatedPositions.forEach(buy => {
+                buy.name === sell.name && (buy.quantity -= sell.quantity)
+            })
+        })
+
+        return updatedPositions.filter(item => item.quantity !== 0)
     }
 
     consolidateActions(actions) {
