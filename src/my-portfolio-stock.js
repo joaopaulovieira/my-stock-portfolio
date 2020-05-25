@@ -86,4 +86,18 @@ export default class MyStockPortfolio {
         console.log(`total: ${totalInvested}`)
         this.positions.forEach(position => console.log(`${position.name} - ${position.totalValue} -  ${((position.totalValue/totalInvested)*100).toFixed(2)}%`))
     }
+
+    totalBalance() {
+        let balance = 0
+        let purchasedPositionsCopy = JSON.parse(JSON.stringify(this.buyActions))
+
+        this.sellActions.forEach(action => {
+            purchasedPositionsCopy.forEach(item => {
+                item.name === action.name && (balance += this.normalizeToNumber(action.quantity * (action.unitaryValue - item.unitaryValue)))
+                purchasedPositionsCopy = purchasedPositionsCopy.filter(item => item.quantity !== 0)
+            })
+        })
+
+        return balance
+    }
 }
