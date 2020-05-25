@@ -26,7 +26,10 @@ export default class MyStockPortfolio {
     
         this.sellActions.forEach(sell => {
             updatedPositions.forEach(buy => {
-                buy.name === sell.name && (buy.quantity -= sell.quantity)
+                if (buy.name === sell.name) {
+                    buy.quantity -= sell.quantity
+                    buy.totalValue = this.normalizeToNumber(buy.unitaryValue * buy.quantity)
+                }
             })
         })
 
