@@ -1,11 +1,11 @@
 import MyStockPortfolio from '../my-stock-portfolio.esm.js'
 import { OPERATIONS_REGISTER, PORTFOLIO_DISTRIBUTION } from './constants.js'
 
-const p = new MyStockPortfolio(OPERATIONS_REGISTER)
-p.portfolioDistribution = PORTFOLIO_DISTRIBUTION
-p.distributionForNewInvestment(10000)
+window.stockPortfolio = new MyStockPortfolio(OPERATIONS_REGISTER)
+stockPortfolio.portfolioDistribution = PORTFOLIO_DISTRIBUTION
+stockPortfolio.portfolioDistribution(10000)
 
-console.log(`Valor total investido: ${p.totalValueInvested()}\n\n`)
-console.log(`Retorno obtido com venda de posições: ${p.totalBalance()}\n\n`)
+console.log(`Valor total investido: ${stockPortfolio.totalValueInvested()}\n\n`)
+console.log(`Retorno obtido com venda de posições: ${stockPortfolio.totalBalance()}\n\n`)
 console.log('Distribuição dos ativos:\n\n')
-p.actualDistribution()
+stockPortfolio.actualDistribution()
