@@ -80,4 +80,10 @@ export default class MyStockPortfolio {
         })
         return totalValueInvested
     }
+
+    actualDistribution() {
+        const totalInvested = this.totalValueInvested()
+        console.log(`total: ${totalInvested}`)
+        this.positions.forEach(position => console.log(`${position.name} - ${position.totalValue} -  ${((position.totalValue/totalInvested)*100).toFixed(2)}%`))
+    }
 }
