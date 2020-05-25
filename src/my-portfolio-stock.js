@@ -11,6 +11,7 @@ export default class MyStockPortfolio {
         this.positions = this.removeSoldPositions(this.buyActions)
     }
 
+    normalizeToNumber(string) { return +(string).toFixed(2) }
 
     insertAdditionalMetadata(rawOperations) {
         const updatedOperations = JSON.parse(JSON.stringify(rawOperations))
@@ -68,5 +69,15 @@ export default class MyStockPortfolio {
     distributionForNewInvestment(value, distribution = this.portfolioDistribution) {
         if (!distribution) return console.error(`No distribution parameter is received. Please, inform one distribution when calling this method or set a default distribution for this portfolio.`)
         distribution.forEach(item => console.log(`${item.name} - ${((value * item.percentile)/100).toFixed(2)}`))
+    }
+
+    totalValueInvested() {
+        if (this.positions.length === 1) return this.positions[0].totalValue
+        const totalValueInvested = this.positions.reduce((accumulator, position) => {
+            return typeof accumulator === 'number'
+                ? this.normalizeToNumber(accumulator + position.totalValue)
+                : this.normalizeToNumber(accumulator.totalValue + position.totalValue)
+        })
+        return totalValueInvested
     }
 }
