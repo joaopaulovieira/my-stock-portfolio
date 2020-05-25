@@ -5,6 +5,9 @@ export default class MyStockPortfolio {
     constructor(rawOperations) {
         this.operationsRegister = this.insertAdditionalMetadata(rawOperations)
 
+        this.buyActions = this.consolidateActions(this.operationsRegister.filter(item => item.action === 'buy'))
+        this.sellActions = this.consolidateActions(this.operationsRegister.filter(item => item.action === 'sell'))
+
     }
 
 
@@ -15,6 +18,40 @@ export default class MyStockPortfolio {
         updatedOperations.forEach(operation => (operation.id = ++id))
         return updatedOperations
     }
+
+    consolidateActions(actions) {
+        let actionsCopy = JSON.parse(JSON.stringify(actions))
+        let mergedItems = []
+    
+        actionsCopy.forEach(action => {  
+            if (mergedItems.some(item => item.name === action.name)) return
+
+            let consolidated = actionsCopy.reduce((accumulator, action) => {
+                if (accumulator.id !== action.id && accumulator.name === action.name) {
+                    actionsCopy = actionsCopy.filter(element => element.id !== accumulator.id && element.id !== action.id)
+                    return { 
+                        id: action.id,
+                        name: accumulator.name,
+                        quantity: accumulator.quantity + action.quantity,
+                        unitaryValue: this.normalizeToNumber((accumulator.unitaryValue + action.unitaryValue)/2),
+                        totalValue: this.normalizeToNumber((accumulator.quantity + action.quantity) * this.normalizeToNumber((accumulator.unitaryValue + action.unitaryValue)/2)),
+                    }
+                }
+                return {
+                    id: accumulator.id,
+                    name: accumulator.name,
+                    quantity: accumulator.quantity,
+                    unitaryValue: accumulator.unitaryValue,
+                    totalValue: this.normalizeToNumber(accumulator.unitaryValue * accumulator.quantity)
+                }
+            }, action)
+
+            mergedItems.push(consolidated)
+        })
+
+        return mergedItems
+    }
+
     distributionForNewInvestment(value, distribution = this.portfolioDistribution) {
         if (!distribution) return console.error(`No distribution parameter is received. Please, inform one distribution when calling this method or set a default distribution for this portfolio.`)
         distribution.forEach(item => console.log(`${item.name} - ${((value * item.percentile)/100).toFixed(2)}`))
